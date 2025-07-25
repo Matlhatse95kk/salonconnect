@@ -1,10 +1,10 @@
-require('dotenv').config();
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
-const twilio = require('twilio');
-const path = require('path');
-const auth = require('./middleware/auth');
+import dotenv from 'dotenv';
+import express from 'express';
+import mongoose from 'mongoose';
+import cors from 'cors';
+import path from 'path';
+
+dotenv.config();
 
 const app = express();
 
@@ -20,10 +20,10 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
   .catch(err => console.error(err));
 
 // Routes
-const appointmentRoutes = require('./routes/appointments');
-const dashboardRoutes = require('./routes/dashboard');
-const technicianRoutes = require('./routes/technicians');
-const inventoryRoutes = require('./routes/inventory');
+import appointmentRoutes from './routes/appointmentRoutes.js';
+import dashboardRoutes from './routes/dashboardRoutes.js';
+import technicianRoutes from './routes/technicianRoutes.js';
+import inventoryRoutes from './routes/inventoryRoutes.js';
 
 app.use('/api/appointments', appointmentRoutes);
 app.use('/api/dashboard', dashboardRoutes);
@@ -31,10 +31,16 @@ app.use('/api/technicians', technicianRoutes);
 app.use('/api/inventory', inventoryRoutes);
 
 // Serve frontend in production
+import { fileURLToPath } from 'url';
+import { dirname, join, resolve } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../frontend/dist')));
-  app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, '../frontend/dist/index.html'));
+  app.use(express.static(join(__dirname, '../frontend/dist')));
+  app.get('*', (_, res) => {
+    res.sendFile(resolve(__dirname, '../frontend/dist/index.html'));
   });
 }
 
