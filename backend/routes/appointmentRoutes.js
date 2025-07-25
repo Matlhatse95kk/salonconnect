@@ -4,6 +4,7 @@ const Appointment = require('../models/Appointment');
 const Salon = require('../models/Salon');
 const twilio = require('twilio');
 const auth = require('../middleware/auth');
+import twilio from 'twilio';
 
 const twilioClient = twilio(process.env.TWILIO_SID, process.env.TWILIO_AUTH_TOKEN);
 
