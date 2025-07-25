@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: salonconnect-backend
+    env: node
+    buildCommand: npm install && npm run build
+    startCommand: node server.js
+    envVars:
+      - key: MONGO_URI
+        value: your_mongodb_uri
+      - key: PORT
+        value: 10000
+      - key: JWT_SECRET
+        generateValue: true
+      - key: TWILIO_SID
+        value: ${{ secrets.TWILIO_SID }}
+      - key: TWILIO_AUTH_TOKEN
+        value: ${{ secrets.TWILIO_AUTH_TOKEN }}
+      - key: TWILIO_PHONE
+        value: ${{ secrets.TWILIO_PHONE }}
